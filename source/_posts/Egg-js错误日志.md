@@ -8,7 +8,6 @@ categories:
 # 一分钟总结
 *  连接数据库失败，主要都是权限问题
 
->
 ```mysql
 $ 先修改密码强度设置
 $ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;
@@ -17,7 +16,6 @@ $ FLUSH PRIVILEGES;
 
 * 修改默认端口
 
->
 ```js
 config.cluster = {
     listen: {
@@ -28,7 +26,6 @@ config.cluster = {
 
 * 使用nunjucks直接输出html而不是字符串
 
-> 
 ```
 {{ xxx | safe }}
 ```

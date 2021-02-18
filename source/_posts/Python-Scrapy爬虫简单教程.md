@@ -45,6 +45,10 @@ scrapy shell https://www.ygdy8.net/html/gndy/china/index.html
 scrapy shell -s USER_AGENT='Mozilla/5.0' https://www.ygdy8.net/html/gndy/china/index.html
 ```
 
+
+
+
+
 接下来就可以使用 XPath 或 css 选择器来提取我们感兴趣的信息了。
 Xpath是一个简单方便的选择器.这里简单的介绍一下它的语法.
 
