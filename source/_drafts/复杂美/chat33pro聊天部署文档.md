@@ -482,7 +482,8 @@ Pwd=  "123456"()
 Db=   "dtalk"
 ```
 
-- discovery.toml
+- discovery.toml(待确认)
+- backup.toml(待确认)
 - group.toml
 
 ```toml
@@ -495,6 +496,17 @@ Db=   "dtalk"
 ```
 
 - oss.toml
+
+```toml
+[MySQL]
+Host= "127.0.0.1"()
+Port= 3306
+User= "root"()
+Pwd=  "123456"()
+Db=   "dtalk"
+```
+
+- store.toml
 
 ```toml
 [MySQL]
