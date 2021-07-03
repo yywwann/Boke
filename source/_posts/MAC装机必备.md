@@ -10,6 +10,46 @@ mac上好用的一些 app
 
 
 
+## 重装电脑那些必要的 app
+
+
+
+### 一定要
+
+- Transmit
+- BetterTouchTool
+- Golang
+- Alfred
+- Iterm2
+- 百度网盘
+- 滴答清单
+- 石墨文档
+- 天翼云盘
+- 微信
+- 迅雷
+- Another Desktop Manager
+- Commander One
+- Dozer
+- iStat Menus
+- Keka
+- Dr. Unarchiver
+- Microsoft Edge
+- Microsoft Office
+- Movist
+- Navicat Premium
+- OpenVPN Connect
+- Parallels Desktop
+- PDF Expert
+- Postman
+- QQ
+- Typora
+- V2rayU
+- Visual Studio Code
+- Snipaste
+- Docker
+
+
+
 ## Istats Menu
 
 系统状态监测软件
@@ -114,7 +154,6 @@ markdown编辑器
 
 ## Xnip
 mac长截图
-
 
 
 

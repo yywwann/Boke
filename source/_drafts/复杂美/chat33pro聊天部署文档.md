@@ -2,6 +2,56 @@
 
 
 
+## 文件目录
+
+```shell
+chat33pro
+├── chain33
+│   ├── chain33
+│   └── chain33.toml
+├── docker-compose.yml
+└── dtalk
+    └── srv
+        ├── app
+        │   ├── bin
+        │   │   ├── answer
+        │   │   ├── backend
+        │   │   ├── backup
+        │   │   ├── discovery
+        │   │   ├── generator
+        │   │   ├── group
+        │   │   ├── offline-push
+        │   │   ├── oss
+        │   │   ├── pusher
+        │   │   ├── store
+        │   │   └── user
+        │   ├── etc
+        │   │   ├── answer.toml
+        │   │   ├── backend.toml
+        │   │   ├── backup.toml
+        │   │   ├── discovery.toml
+        │   │   ├── generator.toml
+        │   │   ├── group.toml
+        │   │   ├── offline_push.toml
+        │   │   ├── oss.toml
+        │   │   ├── pusher.toml
+        │   │   ├── store.toml
+        │   │   └── user.toml
+        │   └── script
+        │       └── dtalk.sql
+        └── im
+            ├── bin
+            │   ├── comet
+            │   └── logic
+            └── etc
+                ├── comet.toml
+                └── logic.toml
+```
+
+
+
+
+
 ## Supervisor 配置文件
 
 - supervisord.conf
@@ -45,11 +95,11 @@ files = /etc/supervisor/conf.d/*.conf
 
 ```conf
 [program:comet]
-command=/opt/dtalk/srv/im/bin/comet -conf /opt/dtalk/srv/im/etc/comet-example.toml
+command=/opt/dtalk/srv/im/bin/comet -conf /opt/dtalk/srv/im/etc/comet.toml
 #autorestart=true
 
 [program:logic]
-command=/opt/dtalk/srv/im/bin/logic -conf /opt/dtalk/srv/im/etc/logic-example.toml
+command=/opt/dtalk/srv/im/bin/logic -conf /opt/dtalk/srv/im/etc/logic.toml
 #autorestart=true
 ```
 
@@ -70,10 +120,6 @@ command=/opt/dtalk/srv/app/bin/discovery -conf /opt/dtalk/srv/app/etc/discovery.
 
 [program:user]
 command=/opt/dtalk/srv/app/bin/user -conf /opt/dtalk/srv/app/etc/user.toml
-#autorestart=true
-
-[program:record]
-command=/opt/dtalk/srv/app/bin/record -conf /opt/dtalk/srv/app/etc/record.toml
 #autorestart=true
 
 [program:generator]
@@ -98,6 +144,18 @@ command=/opt/dtalk/srv/app/bin/offline-push -conf /opt/dtalk/srv/app/etc/offline
 
 [program:group]
 command=/opt/dtalk/srv/app/bin/group -conf /opt/dtalk/srv/app/etc/group.toml
+#autorestart=true
+
+[program:store]
+command=/opt/dtalk/srv/app/bin/store -conf /opt/dtalk/srv/app/etc/store.toml
+#autorestart=true
+
+[program:pusher]
+command=/opt/dtalk/srv/app/bin/pusher -conf /opt/dtalk/srv/app/etc/pusher.toml
+#autorestart=true
+
+[program:answer]
+command=/opt/dtalk/srv/app/bin/answer -conf /opt/dtalk/srv/app/etc/answer.toml
 #autorestart=true
 ```
 
@@ -469,6 +527,13 @@ Port = 3306
 User = "root"()
 Pwd = "123456"()
 Db = "dtalk"
+
+[Release]
+Key = "123321"
+Issuer = "Bob"
+TokenExpireDuration = 86400000000000
+UserName="root"(后台账号)
+Password="root"(后台密码)
 ```
 
 - backup.toml
@@ -482,8 +547,18 @@ Pwd=  "123456"()
 Db=   "dtalk"
 ```
 
-- discovery.toml(待确认)
-- backup.toml(待确认)
+- discovery.toml
+
+```toml
+[[CNodes]]
+name="default"
+address="http://127.0.0.1:8888"(改成公网 IP, 端口不变)
+
+[[DNodes]]
+name="default"
+address="http://127.0.0.1:8801"(改成公网 IP, 端口不变)
+```
+
 - group.toml
 
 ```toml
@@ -519,8 +594,6 @@ Db=   "dtalk"
 
 
 
-
-
 ## 华为云 OBS 配置
 
 [华为云 OBS 临时权限配置 - 即时通讯系统 - Confluence (33.cn)](https://confluence.33.cn/pages/viewpage.action?pageId=25891791)
@@ -552,13 +625,32 @@ INSERT INTO dtalk_oss_config ( app, oss_type, endpoint, access_key_id, access_ke
 
 
 
+## 打包命令
+
+```shell
+# im 仓库
+地址: https://gitlab.33.cn/chat/im
+分支: master
+打包命令: make build_linux
+# dtalk 仓库
+地址: https://gitlab.33.cn/chat/dtalk
+分支: master
+打包命令: build.sh
+# 合约 addrbook 仓库
+地址: https://gitlab.33.cn/contract/addrbook
+分支: master
+打包命令: make build
+```
+
+
+
 ## 启动命令
 
 ```shell
-# 解压 dtalk 并移动到/opt 目录下
+# 解压 chat33pro 并移动到/opt 目录下
 
 # 启动 zookeeper, kafka, redis, etcd
-$ cd /opt/dtalk
+$ cd /opt
 $ docker-compose -f docker-compose.yml up -d
 
 # 设置好 supervisor 更新配置
