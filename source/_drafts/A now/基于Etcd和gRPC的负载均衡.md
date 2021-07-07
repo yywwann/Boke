@@ -15,7 +15,7 @@
 
 generator服务端启动, 在 etcd 上注册kv, k=/dtalk/generator/127.0.0.1:30002, (schema/srvName/IP), val=IP(Weight)
 
-![image-20210601142810359](/Users/cccccccccchy/Library/Application Support/typora-user-images/image-20210601142810359.png)
+![image-20210601142810359](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/基于Etcd和gRPC的负载均衡/1625642921.png)
 
 同时启动多个, 保证 schema/srvName 一致
 
@@ -25,23 +25,23 @@ generator服务端启动, 在 etcd 上注册kv, k=/dtalk/generator/127.0.0.1:300
 
 注册自定义 resolver 到 grpc 中
 
-![image-20210601142827191](/Users/cccccccccchy/Library/Application Support/typora-user-images/image-20210601142827191.png)
+![image-20210601142827191](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/基于Etcd和gRPC的负载均衡/1625642926.png)
 
  Dial型如 `schema:///srvName` 的地址,
 
-![image-20210601142851540](/Users/cccccccccchy/Library/Application Support/typora-user-images/image-20210601142851540.png)
+![image-20210601142851540](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/基于Etcd和gRPC的负载均衡/1625642931.png)
 
 grpc 将 `schema` 解析出来后调用对应的已注册的 `resolver`
 
-![image-20210601115627115](/Users/cccccccccchy/Library/Application Support/typora-user-images/image-20210601115627115.png)
+![image-20210601115627115](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/基于Etcd和gRPC的负载均衡/1625642937.png)
 
-![image-20210601115548985](/Users/cccccccccchy/Library/Application Support/typora-user-images/image-20210601115548985.png)
+![image-20210601115548985](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/基于Etcd和gRPC的负载均衡/1625642942.png)
 
-![image-20210601115453975](/Users/cccccccccchy/Library/Application Support/typora-user-images/image-20210601115453975.png)
+![image-20210601115453975](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/基于Etcd和gRPC的负载均衡/1625642947.png)
 
 
 
-![image-20210601115604351](/Users/cccccccccchy/Library/Application Support/typora-user-images/image-20210601115604351.png)
+![image-20210601115604351](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/基于Etcd和gRPC的负载均衡/1625642952.png)
 
 round-robin会对 address 去重, 所以要加一些信息
 

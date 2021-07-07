@@ -180,7 +180,7 @@ public class TransferServiceImpl implements TransferService {
 
 在重构之前，我们先画一张流程图，描述当前代码在做的每个步骤：
 
-![img](https://pic3.zhimg.com/80/v2-a347561ac2fcc153ed6162d1170f3756_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643593.jpg)
 
 
 
@@ -294,7 +294,7 @@ DAO 和 Repository 类的对比如下：
 - Repository作为一个接口类，可以比较容易的实现Mock或Stub，可以很容易测试。
 - AccountRepositoryImpl实现类，由于其职责被单一出来，只需要关注Account到AccountDO的映射关系和Repository方法到DAO方法之间的映射关系，相对于来说更容易测试。
 
-![img](https://pic2.zhimg.com/80/v2-1ee42f0915a33f6f000707c974792495_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643606.jpg)
 
 
 
@@ -330,7 +330,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
 
 
-![img](https://pic2.zhimg.com/80/v2-952c66bf1d97e78af66873dd50fe124d_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643617.jpg)
 
 
 
@@ -342,7 +342,7 @@ ACL 不仅仅只是多了一层调用，在实际开发中ACL能够提供更多�
 - 易于测试：类似于之前的Repository，ACL的接口类能够很容易的实现Mock或Stub，以便于单元测试。
 - 功能开关：有些时候我们希望能在某些场景下开放或关闭某个接口的功能，或者让某个接口返回一个特定的值，我们可以在ACL配置功能开关来实现，而不会对真实业务代码造成影响。同时，使用功能开关也能让我们容易的实现Monkey测试，而不需要真正物理性的关闭外部依赖。
 
-![img](https://pic4.zhimg.com/80/v2-dbec337d0e361426cc58864e67756adb_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643622.jpg)
 
 ## **2.3 - 抽象中间件**
 
@@ -393,7 +393,7 @@ public class AuditMessageProducerImpl implements AuditMessageProducer {
 
 具体的分析和2.2类似，在此略过。
 
-![img](https://pic4.zhimg.com/80/v2-24099ac4f31bf9472bcf8b19ffaf48ab_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643629.jpg)
 
 ### **2.4 - 封装业务逻辑**
 
@@ -497,7 +497,7 @@ public class AccountTransferServiceImpl implements AccountTransferService {
 accountTransferService.transfer(sourceAccount, targetAccount, targetMoney, exchangeRate);
 ```
 
-![img](https://pic4.zhimg.com/80/v2-14d91a1f537b39307cf72a437ff3c60f_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643638.jpg)
 
 
 
@@ -549,13 +549,13 @@ public class TransferServiceImplNew implements TransferService {
 
 我们可以根据新的结构重新画一张图：
 
-![img](https://pic1.zhimg.com/80/v2-44ebd98e1697c75e119aa1d94a8f7768_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643645.jpg)
 
 
 
 然后通过重新编排后该图变为：
 
-![img](https://pic3.zhimg.com/80/v2-5182bc6ecf7fe977b5968d9181a414aa_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643650.jpg)
 
 
 
@@ -573,7 +573,7 @@ public class TransferServiceImplNew implements TransferService {
 
 在我们传统的代码里，我们一般都很注重每个外部依赖的实现细节和规范，但是今天我们需要敢于抛弃掉原有的理念，重新审视代码结构。在上面重构的代码里，如果抛弃掉所有Repository、ACL、Producer等的具体实现细节，我们会发现每一个对外部的抽象类其实就是输入或输出，类似于计算机系统中的I/O节点。这个观点在CQRS架构中也同样适用，将所有接口分为Command（输入）和Query（输出）两种。除了I/O之外其他的内部逻辑，就是应用业务的核心逻辑。基于这个基础，Alistair Cockburn在2005年提出了Hexagonal Architecture（六边形架构），又被称之为Ports and Adapters（端口和适配器架构）。
 
-![img](https://pic4.zhimg.com/80/v2-11af1ddff05b42025e83e204e71c9a5b_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643656.jpg)
 
 在这张图中：
 
@@ -586,21 +586,21 @@ public class TransferServiceImplNew implements TransferService {
 
 除了2005年的Hex架构，2008年 Jeffery Palermo的Onion Architecture（洋葱架构）和2017年 Robert Martin的Clean Architecture（干净架构），都是极为类似的思想。除了命名不一样、切入点不一样之外，其他的整体架构都是基于一个二维的内外关系。这也说明了基于DDD的架构最终的形态都是类似的。Herberto Graca有一个很全面的图包含了绝大部分现实中的端口类，值得借鉴。
 
-![img](https://pic4.zhimg.com/80/v2-9e83433ede22b4d45e08c067b02e661f_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643661.jpg)
 
 **3.1 - 代码组织结构**
 
 为了有效的组织代码结构，避免下层代码依赖到上层实现的情况，在Java中我们可以通过POM Module和POM依赖来处理相互的关系。通过Spring/SpringBoot的容器来解决运行时动态注入具体实现的依赖的问题。一个简单的依赖关系图如下：
 
-![img](https://pic4.zhimg.com/80/v2-afb31f5fce4ee5703e01f7c119c64923_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643667.jpg)
 
-![img](https://pic4.zhimg.com/80/v2-b3d0dccea152b7e846dc60ca3d615093_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643672.jpg)
 
 **3.1.1 - Types 模块**
 
 Types模块是保存可以对外暴露的Domain Primitives的地方。Domain Primitives因为是无状态的逻辑，可以对外暴露，所以经常被包含在对外的API接口中，需要单独成为模块。Types模块不依赖任何类库，纯 POJO 。
 
-![img](https://pic4.zhimg.com/80/v2-59a53da7e651770e2e1d96bafdf6a503_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643677.jpg)
 
 
 
@@ -608,7 +608,7 @@ Types模块是保存可以对外暴露的Domain Primitives的地方。Domain Pri
 
 Domain 模块是核心业务逻辑的集中地，包含有状态的Entity、领域服务Domain Service、以及各种外部依赖的接口类（如Repository、ACL、中间件等。Domain模块仅依赖Types模块，也是纯 POJO 。
 
-![img](https://pic4.zhimg.com/80/v2-1c36105863c3f5187260a02548dd813b_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643683.jpg)
 
 
 
@@ -616,7 +616,7 @@ Domain 模块是核心业务逻辑的集中地，包含有状态的Entity、领�
 
 Application模块主要包含Application Service和一些相关的类。Application模块依赖Domain模块。还是不依赖任何框架，纯POJO。
 
-![img](https://pic4.zhimg.com/80/v2-b9a185f16cd6203796b582e7c43479d3_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643689.jpg)
 
 
 
@@ -624,7 +624,7 @@ Application模块主要包含Application Service和一些相关的类。Applicat
 
 Infrastructure模块包含了Persistence、Messaging、External等模块。比如：Persistence模块包含数据库DAO的实现，包含Data Object、ORM Mapper、Entity到DO的转化类等。Persistence模块要依赖具体的ORM类库，比如MyBatis。如果需要用Spring-Mybatis提供的注解方案，则需要依赖Spring。
 
-![img](https://pic2.zhimg.com/80/v2-31fb63320e200bd58ec087ba4cab195d_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643695.jpg)
 
 
 
@@ -632,7 +632,7 @@ Infrastructure模块包含了Persistence、Messaging、External等模块。比�
 
 Web模块包含Controller等相关代码。如果用SpringMVC则需要依赖Spring。
 
-![img](https://pic2.zhimg.com/80/v2-71623c8f80edb4f7a6a0bceb8ebe85f5_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第二讲 - 应用架构/1625643701.jpg)
 
 **3.1.6 - Start模块**
 

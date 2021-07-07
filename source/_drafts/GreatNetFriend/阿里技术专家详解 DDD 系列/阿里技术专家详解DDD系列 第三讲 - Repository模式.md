@@ -126,19 +126,19 @@ public void doSomeBusiness(Long id) {
 
 在实际开发中DO、Entity和DTO不一定是1:1:1的关系。一些常见的非1:1关系如下：复杂的Entity拆分多张数据库表：常见的原因在于字段过多，导致查询性能降低，需要将非检索、大字段等单独存为一张表，提升基础信息表的检索效率。常见的案例如商品模型，将商品详细描述等大字段单独保存，提升查询性能：
 
-![img](https://pic3.zhimg.com/80/v2-62d9260b3d519ffbae62975fc42ea2de_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第三讲 - Repository模式/1625643731.jpg)
 
 多个关联的Entity合并一张数据库表：这种情况通常出现在拥有复杂的Aggregate Root - Entity关系的情况下，且需要分库分表，为了避免多次查询和分库分表带来的不一致性，牺牲了单表的简洁性，提升查询和插入性能。常见的案例如主子订单模型：
 
-![img](https://pic4.zhimg.com/80/v2-40fb9422d9d020f2ff9b6bf7e37538b3_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第三讲 - Repository模式/1625643737.jpg)
 
 从复杂Entity里抽取部分信息形成多个DTO：这种情况通常在Entity复杂，但是调用方只需要部分核心信息的情况下，通过一个小的DTO降低信息传输成本。同样拿商品模型举例，基础DTO可能出现在商品列表里，这个时候不需要复杂详情：
 
-![img](https://pic4.zhimg.com/80/v2-58e379153c201f2fd64fce8a25e72fbb_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第三讲 - Repository模式/1625643819.jpg)
 
 合并多个Entity为一个DTO：这种情况通常为了降低网络传输成本，降低服务端请求次数，将多个Entity、DP等对象合并序列化，并且让DTO可以嵌套其他DTO。同样常见的案例是在订单详情里需要展示商品信息：
 
-![img](https://pic1.zhimg.com/80/v2-c4f98d2cfcdcab006f0f59c5c2f01920_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第三讲 - Repository模式/1625643843.jpg)
 
 ### ▐ 模型所在模块和转化器
 
