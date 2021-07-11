@@ -259,7 +259,7 @@ SalesRep rep = salesRepRepo.findRep(areaCode);
 
 为了保证代码质量，每个方法里的每个入参的每个可能出现的条件都要有 TC 覆盖（假设我们先不去测试内部业务逻辑），所以在我们这个方法里需要以下的 TC ：
 
-![img](https://pic2.zhimg.com/80/v2-91a09472af63fccdcfd1231f2882fcfd_720w.jpg)
+![img](https://chy-cdn.oss-cn-hangzhou.aliyuncs.com/阿里技术专家详解DDD系列 第一讲 - Domain Primitive/阿里技术专家详解DDD系列 第一讲 - Domain Primitive_1625710476.jpg)
 
 假如一个方法有 N 个参数，每个参数有 M 个校验逻辑，至少要有 N * M 个 TC 。
 
