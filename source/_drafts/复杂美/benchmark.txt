@@ -1,0 +1,15 @@
+go-wrk \
+    -m="POST" \
+    -H="FZM-SIGNATURE: nz+8PfmTMSdtRpDS0qFBWHFeYN+jw475pCbHHz2j95MVAqKUfU4EHQJ9dRPYPYJW29HUgFttN2Dfd9JNtEStCwE=#1633760861614255*1lxycj972o#03376e3a4718f252c7de6f9169fc304b61f999cc7b8659b9cc49ff5cbd134521dd\nContent-Type: application/json" \
+    -b='{ 
+     "entId": "215897745163030528",
+     "id": "1LNaxM1BtkkRpWEGty8bDxmvWwRwxsCy1B"
+      }' \
+    http://172.16.101.107:20000/v1/admin/staff/get-staff
+
+
+go-wrk \
+    -m="POST" \
+    -H="FZM-SIGNATURE: nz+8PfmTMSdtRpDS0qFBWHFeYN+jw475pCbHHz2j95MVAqKUfU4EHQJ9dRPYPYJW29HUgFttN2Dfd9JNtEStCwE=#1633760861614255*1lxycj972o#03376e3a4718f252c7de6f9169fc304b61f999cc7b8659b9cc49ff5cbd134521dd\nContent-Type: application/json" \
+    -b='{ "entId": "214701499542933504", "id": "1LNaxM1BtkkRpWEGty8bDxmvWwRwxsCy1B" }' \
+    http://172.16.101.107:8888/group/app/group-list

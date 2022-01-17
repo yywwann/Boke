@@ -32,7 +32,7 @@ mac上好用的一些 app
 - Dozer
 - iStat Menus
 - Keka
-- Dr. Unarchiver
+- Dr. Unarchiver-
 - Microsoft Edge
 - Microsoft Office
 - Movist

@@ -17,6 +17,7 @@ chat33pro
         │   │   ├── answer
         │   │   ├── backend
         │   │   ├── backup
+        │   │   ├── call      
         │   │   ├── discovery
         │   │   ├── generator
         │   │   ├── group
@@ -29,6 +30,7 @@ chat33pro
         │   │   ├── answer.toml
         │   │   ├── backend.toml
         │   │   ├── backup.toml
+        │   │   ├── call.toml
         │   │   ├── discovery.toml
         │   │   ├── generator.toml
         │   │   ├── group.toml
@@ -96,11 +98,16 @@ files = /etc/supervisor/conf.d/*.conf
 ```conf
 [program:comet]
 command=/opt/dtalk/srv/im/bin/comet -conf /opt/dtalk/srv/im/etc/comet.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/comet-stdout.log
+stderr_logfile=/var/log/supervisor/comet-stderr.log
 
 [program:logic]
 command=/opt/dtalk/srv/im/bin/logic -conf /opt/dtalk/srv/im/etc/logic.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/logic-stdout.log
+stderr_logfile=/var/log/supervisor/logic-stderr.log
+
 ```
 
 - chain33.conf
@@ -108,7 +115,9 @@ command=/opt/dtalk/srv/im/bin/logic -conf /opt/dtalk/srv/im/etc/logic.toml
 ```conf
 [program:chain33]
 command=/opt/chain33/chain33
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/chain33-stdout.log
+stderr_logfile=/var/log/supervisor/chain33-stderr.log
 ```
 
 - dtalk.conf
@@ -116,47 +125,82 @@ command=/opt/chain33/chain33
 ```conf
 [program:disc]
 command=/opt/dtalk/srv/app/bin/discovery -conf /opt/dtalk/srv/app/etc/discovery.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/discovery-stdout.log
+stderr_logfile=/var/log/supervisor/discovery-stderr.log
 
 [program:user]
 command=/opt/dtalk/srv/app/bin/user -conf /opt/dtalk/srv/app/etc/user.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/user-stdout.log
+stderr_logfile=/var/log/supervisor/user-stderr.log
 
 [program:generator]
 command=/opt/dtalk/srv/app/bin/generator -conf /opt/dtalk/srv/app/etc/generator.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/generator-stdout.log
+stderr_logfile=/var/log/supervisor/generator-stderr.log
 
 [program:backup]
 command=/opt/dtalk/srv/app/bin/backup -conf /opt/dtalk/srv/app/etc/backup.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/backup-stdout.log
+stderr_logfile=/var/log/supervisor/backup-stderr.log
 
 [program:backend]
 command=/opt/dtalk/srv/app/bin/backend -conf /opt/dtalk/srv/app/etc/backend.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/backend-stdout.log
+stderr_logfile=/var/log/supervisor/backend-stderr.log
+
+[program:auth]
+command=/opt/dtalk/srv/app/bin/auth -conf /opt/dtalk/srv/app/etc/auth.toml
+autorestart=ture
+stdout_logfile=/var/log/supervisor/auth-stdout.log
+stderr_logfile=/var/log/supervisor/auth-stderr.log
 
 [program:oss]
 command=/opt/dtalk/srv/app/bin/oss -conf /opt/dtalk/srv/app/etc/oss.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/oss-stdout.log
+stderr_logfile=/var/log/supervisor/oss-stderr.log
 
 [program:offline-push]
 command=/opt/dtalk/srv/app/bin/offline-push -conf /opt/dtalk/srv/app/etc/offline_push.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/offline-push-stdout.log
+stderr_logfile=/var/log/supervisor/offline-push-stderr.log
 
 [program:group]
 command=/opt/dtalk/srv/app/bin/group -conf /opt/dtalk/srv/app/etc/group.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/group-stdout.log
+stderr_logfile=/var/log/supervisor/group-stderr.log
 
-[program:store]
-command=/opt/dtalk/srv/app/bin/store -conf /opt/dtalk/srv/app/etc/store.toml
-#autorestart=true
+[program:call]
+command=/opt/dtalk/srv/app/bin/call -conf /opt/dtalk/srv/app/etc/call.toml
+autorestart=true
+stdout_logfile=/var/log/supervisor/call-stdout.log
+stderr_logfile=/var/log/supervisor/call-stderr.log
 
 [program:pusher]
 command=/opt/dtalk/srv/app/bin/pusher -conf /opt/dtalk/srv/app/etc/pusher.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/pusher-stdout.log
+stderr_logfile=/var/log/supervisor/pusher-stderr.log
 
 [program:answer]
 command=/opt/dtalk/srv/app/bin/answer -conf /opt/dtalk/srv/app/etc/answer.toml
-#autorestart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/answer-stdout.log
+stderr_logfile=/var/log/supervisor/answer-stderr.log
+
+[program:store]
+command=/opt/dtalk/srv/app/bin/store -conf /opt/dtalk/srv/app/etc/store.toml
+autorestart=true
+stdout_logfile=/var/log/supervisor/store-stdout.log
+stderr_logfile=/var/log/supervisor/store-stderr.log
+
 ```
 
 
@@ -196,6 +240,10 @@ upstream backend {
 
 upstream group {
         server 127.0.0.1:18011;
+}
+
+upstream call {
+        server 127.0.0.1:18013;
 }
 
 server {
@@ -290,6 +338,14 @@ server {
 
     location /group/ {
                 proxy_pass http://group/;
+                proxy_redirect default;
+                proxy_set_header Host $host;
+                proxy_set_header X-real-ip $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_cookie_path / /;
+        }
+    location /call/ {
+                proxy_pass http://call/;
                 proxy_redirect default;
                 proxy_set_header Host $host;
                 proxy_set_header X-real-ip $remote_addr;
@@ -573,12 +629,28 @@ Db=   "dtalk"
 - oss.toml
 
 ```toml
-[MySQL]
-Host= "127.0.0.1"()
-Port= 3306
-User= "root"()
-Pwd=  "123456"()
-Db=   "dtalk"
+# **upload 接口中的 defaultOssType 由 oss.toml 中 appId 相同的最后一个 Oss 中的 OssType 决定**
+[[Oss]]
+AppId = "dtalk"
+OssType = "huaweiyun"
+RegionId = "cn-east-3"
+AccessKeyId = "VS1SNCU6SM7NSRLFT0HF"()
+AccessKeySecret = "pRI6OjPTrc0atS3Do4PFgSOyx7IOnaXXbDf5ZBd2"()
+Role = ""
+Policy = '''{
+	"Version": "1.1",
+	"Statement": [
+		{
+			"Action": [
+				"obs:object:*"
+			],
+			"Effect": "Allow"
+		}
+	]
+}'''
+DurationSeconds = 3600
+Bucket = "ccccchy-test"()
+EndPoint = "obs.cn-east-3.myhuaweicloud.com"()
 ```
 
 - store.toml
@@ -592,35 +664,20 @@ Pwd=  "123456"()
 Db=   "dtalk"
 ```
 
+- call.toml
 
+```toml
+[MySQL]
+Host= "172.16.101.107"()
+Port= 3306
+User= "root"()
+Pwd=  "123456"()
+Db=   "dtalk"
 
-## 华为云 OBS 配置
-
-[华为云 OBS 临时权限配置 - 即时通讯系统 - Confluence (33.cn)](https://confluence.33.cn/pages/viewpage.action?pageId=25891791)
-
-**bucket** (桶名), **endpoint** (终端链接)需要告诉客户端
-
-```sql
-INSERT INTO dtalk_oss_config ( app, oss_type, endpoint, access_key_id, access_key_secret, role, policy, duration_seconds)
-                        VALUES (
-                        'dtalk',
-                        'huaweiyun',
-                        '+https://obs.cn-east-3.myhuaweicloud.com',   (各地域接入地址)
-                        '+VS1SNCU6SM7NSRLFT0HF',
-                        '+pRI6OjPTrc0atS3Do4PFgSOyx7IOnaXXbDf5ZBd2',
-                        '',
-                        '{
-	"Version": "1.1",
-	"Statement": [
-		{
-			"Action": [
-				"obs:object:*"
-			],
-			"Effect": "Allow"
-		}
-	]
-}',
-                        3600 )
+[TCRTCConfig] # 腾讯音视频服务
+SDKAppId  = 1400543084()
+SecretKey = "1ed1b5e2729395c1e8b55b83be72e60139dfa36ff3fa67bc3c3285592a7b3cf6"()
+Expire    = 86400
 ```
 
 
@@ -653,13 +710,56 @@ INSERT INTO dtalk_oss_config ( app, oss_type, endpoint, access_key_id, access_ke
 $ cd /opt
 $ docker-compose -f docker-compose.yml up -d
 
+# 设置软连接
+$ cd /opt/chat33pro/dtalk/srv/app/bin
+$ ln -sf answer_v0.5.2 answer; \
+ln -sf backend_v0.0.10 backend; \
+ln -sf backup_v1.0.8 backup; \
+ln -sf call_v0.0.8 call; \
+ln -sf discovery_v0.0.1 discovery; \
+ln -sf generator_v0.0.1 generator; \
+ln -sf group_v1.1.3 group; \
+ln -sf offline-push_v0.0.2 offline-push; \
+ln -sf oss_v1.3.0 oss; \
+ln -sf pusher_v0.5.2 pusher; \
+ln -sf record_v1.1.3 record; \
+ln -sf store_v0.5.2 store; \
+ln -sf user_v1.0.4 user
+$ cd /opt/chat33pro/dtalk/srv/im/bin
+$ ln -sf comet_v3.0.0 comet; \
+ln -sf logic_v3.1.3 logic
+
 # 设置好 supervisor 更新配置
-$ sudo supervisorctl update
-$ sudo supervisorctl restart backend disc backup generator oss user offline-push
-$ sudo supervisorctl restart comet logic
-$ sudo supervisorctl restart answer pusher group store
+$ sudo supervisorctl update; \
+sudo supervisorctl stop all; \
+sudo supervisorctl start backend disc backup generator oss user offline-push; \
+sudo supervisorctl start comet logic; \
+sudo supervisorctl start answer pusher group store call; \
 
 # 设置好 nginx 后更新 nginx 配置
 $ nginx -s reload
 ```
 
+
+
+# CHANGE LOG
+
+
+
+## version 0.0.3 @2021.7.30
+
+**Feature**
+
+- 增加语音通话
+- oss 信息从配置文件中获得
+- 定制日志名, 给服务增加版本号
+
+
+
+## version 0.0.2 @2021.7.1
+
+可能是修 bug
+
+## version 0.0.1 @2021.6.28
+
+第一次部署

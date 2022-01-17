@@ -4,8 +4,8 @@
 
 # Site
 title: 陈陈陈陈陈大大
-subtitle: 我发现了个咪咪
-description: 入会5毛
+subtitle: 
+description: 
 keywords:
 author: CHy
 language: zh-Hans
@@ -73,7 +73,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: material
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
