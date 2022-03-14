@@ -43,7 +43,7 @@
 
 ![三色标记法全貌](https://static.sitestack.cn/projects/qcrao-Go-Questions/GC/assets/gc-blueprint.png)
 
-
+> 类似bfs
 
 ## STW 是什么意思？
 
@@ -85,7 +85,7 @@ Go 语言中对 GC 的触发时机存在两种形式：
 
 1. **主动触发**，通过调用 runtime.GC 来触发 GC，此调用阻塞式地等待当前 GC 运行完毕。
 2. **被动触发**，分为两种方式：
-   - 使用系统监控，当超过两分钟没有产生任何 GC 时，强制触发 GC。
+   - 使用系统监控，当超过**两分钟**没有产生任何 GC 时，强制触发 GC。
    - 使用步调（Pacing）算法，其核心思想是控制内存增长的比例。
 
 
@@ -193,3 +193,32 @@ func keepalloc3() {
 }
 ```
 
+### 形式3：goroutine 泄漏
+
+```go
+func gen() <-chan int {
+    ch := make(chan int)
+    go func() {
+        var n int
+        for {
+            ch <- n
+            n++
+            time.Sleep(time.Second)
+        }
+    }()
+    return ch
+}
+
+func main() {
+    for n := range gen() {
+        fmt.Println(n)
+        if n == 5 {
+            break
+        }
+    }
+    // ……
+}
+```
+
+
+gen 函数的协程就会执行无限循环，永远不会停下来。发生了 goroutine 泄漏。

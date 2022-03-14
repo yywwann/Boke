@@ -20,7 +20,7 @@
 
   当 M 没有工作可做的时候，在它休眠前，会“自旋”地来找工作：检查全局队列，查看 network poller，试图执行 gc 任务，或者“偷”工作。
 
-  每个Processor对象都拥有一个LRQ（Local Run Queue），未分配的Goroutine对象保存在GRQ（Global Run Queue ）中，等待分配给某一个P的LRQ中，每个LRQ里面包含若干个用户创建的Goroutine对象，同时Processor作为桥梁对Machine和Goroutine进行了解耦，也就是说Goroutine如果想要使用Machine需要绑定一个Processor才行，上图中共有两个M和两个P也就是说我们可以同时并行处理两个goroutine。
+  每个Processor对象都拥有一个LRQ（Local Run Queue 本地队列），未分配的Goroutine对象保存在GRQ（Global Run Queue 全局队列）中，等待分配给某一个P的LRQ中，每个LRQ里面包含若干个用户创建的Goroutine对象，同时Processor作为桥梁对Machine和Goroutine进行了解耦，也就是说Goroutine如果想要使用Machine需要绑定一个Processor才行，上图中共有两个M和两个P也就是说我们可以同时并行处理两个goroutine。
 
 
 
@@ -87,7 +87,7 @@ M 与 P 的数量没有绝对关系，一个 M 阻塞，P 就会去创建或者�
 
  2、有两个存储 G 的队列，一个是局部调度器 P 的本地队列、一个是全局 G 队列。新创建的 G 会先保存在 P 的本地队列中，如果 P 的本地队列已经满了就会保存在全局的队列中；
 
- 3、G 只能运行在 M 中，一个 M 必须持有一个 P，M 与 P 是 1：1 的关系。M 会从 P 的本地队列弹出一个可执行状态的 G 来执行，如果 P 的本地队列为空，就会想其他的 MP 组合偷取一个可执行的 G 来执行；
+ 3、G 只能运行在 M 中，一个 M 必须持有一个 P，M 与 P 是 1：1 的关系。M 会从 P 的本地队列弹出一个可执行状态的 G 来执行，如果 P 的本地队列为空，就会从其他的 MP 组合偷取一个可执行的 G 来执行；
 
  4、一个 M 调度 G 执行的过程是一个循环机制；
 

@@ -2,7 +2,7 @@
 
 
 
-需要有一个指标来衡量前面描述的情况，这就是`装载因子`。Go 源码里这样定义 `装载因子`：
+需要有一个指标来衡量前面描述的情况，这就是**装载因子**。Go 源码里这样定义装载因子：
 
 ```go
 loadFactor := count / (2^B)
@@ -10,10 +10,14 @@ loadFactor := count / (2^B)
 
 count 就是 map 的元素个数，2^B 表示 bucket 数量。
 
-再来说触发 map 扩容的时机：在向 map 插入新 key 的时候，会进行条件检测，符合下面这 2 个条件，就会触发扩容：
+## 触发 map 扩容的时机
 
-1. 装载因子超过阈值，源码里定义的阈值是 6.5。
-2. overflow 的 bucket 数量过多：当 B 小于 15，也就是 bucket 总数 2^B 小于 2^15 时，如果 overflow 的 bucket 数量超过 2^B；当 B >= 15，也就是 bucket 总数 2^B 大于等于 2^15，如果 overflow 的 bucket 数量超过 2^15。
+1. 装载因子超过阈值，源码里定义的阈值是 6.5。（每个bucket里超过6.5个元素）
+2. overflow 的 bucket 数量过多：当 B 小于 15 时（ bucket 总数 2^B 小于 2^15 ）, overflow 的 bucket 数量超过 2^B；当 B >= 15，也就是 bucket 总数 2^B 大于等于 2^15，如果 overflow 的 bucket 数量超过 2^15。
+
+
+
+
 
 
 
