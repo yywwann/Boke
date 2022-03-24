@@ -35,7 +35,7 @@ count 就是 map 的元素个数，2^B 表示 bucket 数量。
 
 对于条件 2，其实元素没那么多，但是 overflow bucket 数特别多，说明很多 bucket 都没装满。解决办法就是开辟一个新 bucket 空间，将老 bucket 中的元素移动到新 bucket，使得同一个 bucket 中的 key 排列地更紧密。这样，原来，在 overflow bucket 中的 key 可以移动到 bucket 中来。结果是节省空间，提高 bucket 利用率，map 的查找和插入效率自然就会提升。
 
-
+![image-20220315224736397](C:\Users\rxyhc\AppData\Roaming\Typora\typora-user-images\image-20220315224736397.png)
 
 # 参考链接
 
